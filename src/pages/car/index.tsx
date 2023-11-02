@@ -60,7 +60,7 @@ const CarPage = () => {
       {isLoading ? (
         <div>Loading...</div>
       ) : (
-        <SQLTable data={rows} columns={columnsToDisplay} />
+        <SQLTable data={rows} columns={columnsToDisplay} table="car" />
       )}
       <CreateModal
         tableName="Car"

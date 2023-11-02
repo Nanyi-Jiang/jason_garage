@@ -9,8 +9,12 @@ import {
   TableContainer,
 } from "@chakra-ui/react";
 
-export const SQLTable = (props: { data: any[]; columns: string[] }) => {
-  const { data, columns } = props;
+export const SQLTable = (props: {
+  data: any[];
+  columns: string[];
+  table: string;
+}) => {
+  const { data, columns, table } = props;
   return (
     <TableContainer>
       <Table variant="simple">
@@ -32,6 +36,18 @@ export const SQLTable = (props: { data: any[]; columns: string[] }) => {
                       <Td key={index}>{JSON.stringify(row[key], null, 2)}</Td>
                     );
                   } else {
+                    if (key === "id") {
+                      return (
+                        <Td key={index}>
+                          <a
+                            href={`/${table}/${row[key]}`}
+                            className="underline"
+                          >
+                            {row[key]}
+                          </a>
+                        </Td>
+                      );
+                    }
                     return <Td key={index}>{row[key]}</Td>;
                   }
                 })}
