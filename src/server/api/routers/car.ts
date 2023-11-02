@@ -10,8 +10,8 @@ export const carRouter = createTRPCRouter({
         model: z.string(),
         year: z.number(),
         vin: z.string(),
-        mileage: z.number(),
         color: z.string(),
+        mileage: z.number().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -25,6 +25,24 @@ export const carRouter = createTRPCRouter({
         },
       });
     }),
+
+  get: protectedProcedure
+    .input(z.object({ id: z.number() }))
+    .query(({ ctx, input }) => {
+      return ctx.db.car.findUnique({
+        where: {
+          id: input.id,
+        },
+      });
+    }),
+
+  getAll: protectedProcedure.query(({ ctx }) => {
+    return ctx.db.car.findMany({
+      where: {
+        userId: ctx.session.user.id,
+      },
+    });
+  }),
 
   getSecretMessage: protectedProcedure.query(() => {
     return "you can now see this secret message!";
