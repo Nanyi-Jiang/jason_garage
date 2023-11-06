@@ -4,8 +4,6 @@ import { SQLTable } from "~/components/SQLTable";
 import { api } from "~/utils/api";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-// import trpc schema for car.getAll route
-import { inferProcedureOutput } from "@trpc/server";
 
 const Index = () => {
   const { data: sessionData } = useSession();
