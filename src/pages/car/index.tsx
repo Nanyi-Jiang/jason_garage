@@ -29,6 +29,7 @@ const CarPage = () => {
   const [rows, setRows] = useState<any[]>([]);
   const columnsToDisplay = [
     "id",
+    "userId",
     "make",
     "model",
     "year",
