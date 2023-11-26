@@ -23,12 +23,23 @@ export default function Home() {
 
 function AuthShowcase() {
   const { data: sessionData } = useSession();
+  const { data: userRole, isLoading: loadingUserData } =
+    api.user.getRole.useQuery(
+      { userId: sessionData?.user.id ?? "1" },
+      { enabled: !!sessionData?.user?.id },
+    );
+
   return (
     <div className="flex flex-col items-center justify-center gap-4">
-      <p className="text-center text-2xl text-white">
+      <div className="text-center text-2xl text-white">
         {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
+        <p>User Role: {loadingUserData ? <>Loading...</> : <>{userRole}</>}</p>
+      </div>
+      <p>
+        {!sessionData && (
+          <>Feel free to checkout the pages in the navbar after sign in.</>
+        )}
       </p>
-      <p>Feel free to checkout the pages in the navbar after sign in.</p>
     </div>
   );
 }
