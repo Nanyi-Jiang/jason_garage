@@ -5,6 +5,26 @@ import { api } from "~/utils/api";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 
+const attributesToCollect = [
+  { name: "make", type: "text", placeholder: "Make" },
+  { name: "model", type: "text", placeholder: "Model" },
+  { name: "year", type: "number", placeholder: "Year" },
+  { name: "vin", type: "text", placeholder: "VIN" },
+  { name: "mileage", type: "number", placeholder: "Mileage" },
+  { name: "color", type: "text", placeholder: "Color" },
+];
+
+const columnsToDisplay = [
+  "id",
+  "userId",
+  "make",
+  "model",
+  "year",
+  "vin",
+  "mileage",
+  "createdAt",
+];
+
 const Index = () => {
   const { data: sessionData } = useSession();
 
@@ -18,25 +38,7 @@ const Index = () => {
 };
 
 const CarPage = () => {
-  const attributesToCollect = [
-    { name: "make", type: "text", placeholder: "Make" },
-    { name: "model", type: "text", placeholder: "Model" },
-    { name: "year", type: "number", placeholder: "Year" },
-    { name: "vin", type: "text", placeholder: "VIN" },
-    { name: "mileage", type: "number", placeholder: "Mileage" },
-    { name: "color", type: "text", placeholder: "Color" },
-  ];
   const [rows, setRows] = useState<any[]>([]);
-  const columnsToDisplay = [
-    "id",
-    "userId",
-    "make",
-    "model",
-    "year",
-    "vin",
-    "mileage",
-    "createdAt",
-  ];
 
   const submitFunction = api.car.create;
   const { isLoading, data: cars, refetch } = api.car.getAll.useQuery();
