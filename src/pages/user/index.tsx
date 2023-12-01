@@ -1,5 +1,4 @@
 import React from "react";
-import { CreateModal } from "~/components/CreateModal";
 import { SQLTable } from "~/components/SQLTable";
 import { api } from "~/utils/api";
 import { useState, useEffect } from "react";

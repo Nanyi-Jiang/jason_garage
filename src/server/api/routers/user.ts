@@ -6,6 +6,7 @@ import {
   getAllUsers,
   getUserById,
   deleteUserById,
+  updateUser,
 } from "~/server/api/user";
 
 export const userRouter = createTRPCRouter({
@@ -29,5 +30,18 @@ export const userRouter = createTRPCRouter({
     .input(z.object({ id: z.string() }))
     .mutation(({ input }) => {
       return deleteUserById(input.id);
+    }),
+
+  update: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        email: z.string().optional(),
+        name: z.string().optional(),
+        role: z.enum(["USER", "ADMIN"]).optional(),
+      }),
+    )
+    .mutation(({ input }) => {
+      return updateUser(input);
     }),
 });

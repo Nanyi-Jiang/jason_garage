@@ -1,3 +1,4 @@
+import { type Role } from "@prisma/client";
 import { db } from "../db";
 
 export async function getUserRole(userId: string): Promise<string> {
@@ -49,4 +50,22 @@ export async function deleteUserById(userId: string) {
       },
     }),
   ]);
+}
+
+export async function updateUser(user: {
+  id: string;
+  email?: string;
+  name?: string;
+  role?: Role;
+}) {
+  return db.user.update({
+    where: {
+      id: user.id,
+    },
+    data: {
+      email: user.email,
+      name: user.name,
+      role: user.role,
+    },
+  });
 }
