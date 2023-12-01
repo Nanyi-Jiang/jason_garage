@@ -8,6 +8,7 @@ import {
   getCarsByUserId,
   deleteCarById,
   updateCar,
+  getCarsByYearWithUser,
 } from "../car";
 
 export const carRouter = createTRPCRouter({
@@ -65,4 +66,15 @@ export const carRouter = createTRPCRouter({
   getAll: protectedProcedure.query(({ ctx }) => {
     return getAllCars(ctx.session.user.id);
   }),
+
+  getCarsByYearWithUser: protectedProcedure
+    .input(
+      z.object({
+        yearLeft: z.number(),
+        yearRight: z.number(),
+      }),
+    )
+    .query(({ input }) => {
+      return getCarsByYearWithUser(input.yearLeft, input.yearRight);
+    }),
 });

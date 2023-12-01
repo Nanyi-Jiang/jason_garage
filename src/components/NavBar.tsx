@@ -8,6 +8,12 @@ const navigationPages = {
       <div className="mr-4">Home</div>
     </Link>
   ),
+  Report: (
+    <Link href="/report">
+      <div className="mr-4">Report</div>
+    </Link>
+  ),
+  Split: <div className="mr-4">|</div>,
   Car: (
     <Link href="/car">
       <div className="mr-4">Car</div>

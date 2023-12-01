@@ -1,3 +1,4 @@
+import { type Car } from "@prisma/client";
 import { db } from "../db";
 import { getUserRole } from "./user";
 
@@ -80,4 +81,18 @@ export async function deleteCarById(carId: number) {
       id: carId,
     },
   });
+}
+
+// ====== Stored Procedures ======
+export async function getCarsByYearWithUser(
+  yearLeft: number,
+  yearRight: number,
+) {
+  return db.$queryRaw<
+    Car[]
+  >`SELECT * FROM "Car" WHERE "year" >= ${yearLeft} AND "year" < ${yearRight}`;
+}
+
+export async function getCarCountByMake(make: string) {
+  return db.$queryRaw`SELECT COUNT(*) FROM "Car" WHERE "make" = ${make}`;
 }

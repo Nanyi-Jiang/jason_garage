@@ -19,6 +19,10 @@ model Car {
   year      Int
   mileage   Int      @default(0)
   user      User     @relation(fields: [userId], references: [id])
+
+  @@index([year])
+  @@index([make])
+  @@index([mileage])
 }
 
 model Post {
