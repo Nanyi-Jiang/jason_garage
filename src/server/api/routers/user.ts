@@ -1,7 +1,12 @@
 import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
-import { getUserRole, getAllUsers, getUserById } from "~/server/api/user";
+import {
+  getUserRole,
+  getAllUsers,
+  getUserById,
+  deleteUserById,
+} from "~/server/api/user";
 
 export const userRouter = createTRPCRouter({
   getRole: protectedProcedure
@@ -18,5 +23,11 @@ export const userRouter = createTRPCRouter({
     .input(z.object({ id: z.string() }))
     .query(({ input }) => {
       return getUserById(input.id);
+    }),
+
+  delete: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(({ input }) => {
+      return deleteUserById(input.id);
     }),
 });

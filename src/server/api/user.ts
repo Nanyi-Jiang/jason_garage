@@ -33,3 +33,20 @@ export async function getUserById(userId: string) {
     },
   });
 }
+
+export async function deleteUserById(userId: string) {
+  // using transaction here to make sure we don't delete the last admin
+  // also, delete all the related car records for this user
+  return db.$transaction([
+    db.car.deleteMany({
+      where: {
+        userId,
+      },
+    }),
+    db.user.delete({
+      where: {
+        id: userId,
+      },
+    }),
+  ]);
+}

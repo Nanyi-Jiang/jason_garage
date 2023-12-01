@@ -22,11 +22,15 @@ const SinglePage = () => {
     },
   );
 
+  const deleteUserMutation = api.user.delete.useMutation();
+
   // WIP
   // TODO: implement transaction for deleting the user
-  // const handleDelete = () => {
-  //   api.car.delete.useMutation({ id: Number(id) });
-  // }
+  const handleDelete = async () => {
+    if (!id) return;
+    await deleteUserMutation.mutateAsync({ id: id as string });
+    router.push("/user").catch(console.error);
+  };
 
   // TODO: only make the role updatable
   // const handleUpdate = () => {
@@ -44,7 +48,7 @@ const SinglePage = () => {
           <div className="py-2">name: {userData?.name}</div>
           <div className="py-2">role: {userData?.role}</div>
           <div className="py-2">
-            <Button>Delete this Record</Button>
+            <Button onClick={handleDelete}>Delete this Record</Button>
           </div>
           <div className="py-2">
             <Button>Update this Record</Button>
