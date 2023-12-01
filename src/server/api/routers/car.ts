@@ -1,8 +1,14 @@
 import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
-import { getUserRole } from "../user";
-import { createCar, getAllCars, getCarById, getCarsByUserId } from "../car";
+import {
+  createCar,
+  getAllCars,
+  getCarById,
+  getCarsByUserId,
+  deleteCarById,
+  updateCar,
+} from "../car";
 
 export const carRouter = createTRPCRouter({
   create: protectedProcedure
@@ -24,6 +30,32 @@ export const carRouter = createTRPCRouter({
     .input(z.object({ id: z.number() }))
     .query(({ input }) => {
       return getCarById(input.id);
+    }),
+
+  update: protectedProcedure
+    .input(
+      z.object({
+        id: z.number(),
+        make: z.string().optional(),
+        model: z.string().optional(),
+        year: z.number().optional(),
+        vin: z.string().optional(),
+        color: z.string().optional(),
+        mileage: z.number().optional(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const car = await getCarById(input.id);
+      if (!car) {
+        throw new Error("Car not found");
+      }
+      return updateCar(input);
+    }),
+
+  delete: protectedProcedure
+    .input(z.object({ id: z.number() }))
+    .mutation(({ input }) => {
+      return deleteCarById(input.id);
     }),
 
   getAllById: protectedProcedure.query(({ ctx }) => {

@@ -15,9 +15,10 @@ export const UpdateModal = (props: {
   formInputs: FormItem[];
   submitFunction: any;
   refetch?: any;
+  id: number;
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { tableName, formInputs, submitFunction, refetch } = props;
+  const { tableName, formInputs, submitFunction, refetch, id } = props;
   return (
     <>
       <Button onClick={onOpen}>Update a {tableName} record</Button>
@@ -32,6 +33,7 @@ export const UpdateModal = (props: {
               submitFunction={submitFunction}
               onClose={onClose}
               refetch={refetch}
+              id={id}
             />
           </ModalBody>
         </ModalContent>

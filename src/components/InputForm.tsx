@@ -18,13 +18,14 @@ export default function InputForm(props: {
   formItems: FormItem[];
   onClose: () => void;
   refetch?: any;
+  id?: number;
 }) {
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
   } = useForm();
-  const { submitFunction, formItems, onClose, refetch } = props;
+  const { submitFunction, formItems, onClose, refetch, id } = props;
 
   const mutation = submitFunction.useMutation();
 
@@ -35,14 +36,16 @@ export default function InputForm(props: {
 
   const onSubmit = async (values: formSchemaType) => {
     // convert values to number if needed
-    const valuesToSubmit = Object.entries(values).reduce(
-      (acc, [key, value]) => {
-        if (key === "model" || key === "vin") return { ...acc, [key]: value };
-        const valueToSubmit = isNaN(Number(value)) ? value : Number(value);
-        return { ...acc, [key]: valueToSubmit };
-      },
-      {},
-    );
+    let valuesToSubmit = Object.entries(values).reduce((acc, [key, value]) => {
+      if (key === "model" || key === "vin") return { ...acc, [key]: value };
+      const valueToSubmit = isNaN(Number(value)) ? value : Number(value);
+      return { ...acc, [key]: valueToSubmit };
+    }, {});
+    if (id) {
+      // if id exists, add it to the valuesToSubmit
+      console.log("id", id);
+      valuesToSubmit = { ...valuesToSubmit, id: id };
+    }
     await mutation.mutate(valuesToSubmit);
     refetch();
   };
