@@ -14,3 +14,22 @@ export async function getUserRole(userId: string): Promise<string> {
   }
   return userRole.role;
 }
+
+export async function getAllUsers() {
+  return db.user.findMany({
+    select: {
+      id: true,
+      email: true,
+      name: true,
+      role: true,
+    },
+  });
+}
+
+export async function getUserById(userId: string) {
+  return db.user.findUnique({
+    where: {
+      id: userId,
+    },
+  });
+}

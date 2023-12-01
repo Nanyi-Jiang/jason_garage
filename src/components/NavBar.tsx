@@ -13,6 +13,11 @@ const navigationPages = {
       <div className="mr-4">Car</div>
     </Link>
   ),
+  User: (
+    <Link href="/user">
+      <div className="mr-4">User</div>
+    </Link>
+  ),
 };
 
 export const NavBar = () => {
