@@ -82,17 +82,3 @@ export async function deleteCarById(carId: number) {
     },
   });
 }
-
-// ====== Stored Procedures ======
-export async function getCarsByYearWithUser(
-  yearLeft: number,
-  yearRight: number,
-) {
-  return db.$queryRaw<
-    Car[]
-  >`SELECT * FROM "Car" WHERE "year" >= ${yearLeft} AND "year" < ${yearRight}`;
-}
-
-export async function getCarCountByMake(make: string) {
-  return db.$queryRaw`SELECT COUNT(*) FROM "Car" WHERE "make" = ${make}`;
-}

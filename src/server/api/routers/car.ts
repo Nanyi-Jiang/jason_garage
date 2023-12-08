@@ -8,8 +8,11 @@ import {
   getCarsByUserId,
   deleteCarById,
   updateCar,
-  getCarsByYearWithUser,
 } from "../car";
+import {
+  getCarsReportByYear,
+  getCarsReportByMileage,
+} from "../storedProcedures";
 
 export const carRouter = createTRPCRouter({
   create: protectedProcedure
@@ -67,7 +70,7 @@ export const carRouter = createTRPCRouter({
     return getAllCars(ctx.session.user.id);
   }),
 
-  getCarsByYearWithUser: protectedProcedure
+  getCarsReportByYear: protectedProcedure
     .input(
       z.object({
         yearLeft: z.number(),
@@ -75,6 +78,16 @@ export const carRouter = createTRPCRouter({
       }),
     )
     .query(({ input }) => {
-      return getCarsByYearWithUser(input.yearLeft, input.yearRight);
+      return getCarsReportByYear(input.yearLeft, input.yearRight);
+    }),
+  getCarsReportByMileage: protectedProcedure
+    .input(
+      z.object({
+        mileageLeft: z.number(),
+        mileageRight: z.number(),
+      }),
+    )
+    .query(({ input }) => {
+      return getCarsReportByMileage(input.mileageLeft, input.mileageRight);
     }),
 });
