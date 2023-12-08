@@ -20,45 +20,42 @@ export async function getAllStoredFunctionsAndProcedures() {
 }
 
 // reference for stored function
-//
-// for getCarsReportByYear
-//
-// CREATE OR REPLACE FUNCTION cars_report_within_year(start_year INTEGER, end_year INTEGER)
-// RETURNS SETOF "Car"
-// LANGUAGE plpgsql
-// AS $$
-// BEGIN
-//   RETURN QUERY SELECT * FROM "Car" WHERE "year" >= start_year AND "year" < end_year;
-// END;
-// $$;
-//
-// for getCarsReportByMileage
-//
-// CREATE OR REPLACE FUNCTION cars_report_within_mileage(lower_bound INTEGER, upper_bound INTEGER)
-// RETURNS SETOF "Car"
-// LANGUAGE plpgsql
-// AS $$
-// BEGIN
-//   RETURN QUERY SELECT * FROM "Car" WHERE "mileage" >= lower_bound AND "mileage" < upper_bound;
-// END;
-// $$;
-//
-// for getAllStoredFunctionsAndProcedures
-//
-// CREATE OR REPLACE FUNCTION list_functions_and_procedures()
-// RETURNS TABLE("Schema" text, "Name" text, "ResultDataType" text, "ArgumentDataTypes" text)
-// LANGUAGE plpgsql
-// AS $$
-// BEGIN
-//   RETURN QUERY
-//   SELECT n.nspname::text as "Schema",
-//          p.proname::text as "Name",
-//          pg_catalog.pg_get_function_result(p.oid)::text as "ResultDataType",
-//          pg_catalog.pg_get_function_arguments(p.oid)::text as "ArgumentDataTypes"
-//   FROM pg_catalog.pg_proc p
-//   LEFT JOIN pg_catalog.pg_namespace n ON n.oid = p.pronamespace
-//   WHERE pg_catalog.pg_function_is_visible(p.oid)
-//     AND n.nspname = 'public'
-//   ORDER BY 1, 2;
-// END;
-// $$;
+
+// execute all CREATE stored functions
+export async function executeAllStoredFunctions() {
+  await db.$executeRaw`CREATE OR REPLACE FUNCTION cars_report_within_year(start_year INTEGER, end_year INTEGER)
+  RETURNS SETOF "Car"
+  LANGUAGE plpgsql
+  AS $$
+  BEGIN
+    RETURN QUERY SELECT * FROM "Car" WHERE "year" >= start_year AND "year" < end_year;
+  END;
+  $$;`;
+
+  await db.$executeRaw`CREATE OR REPLACE FUNCTION cars_report_within_mileage(lower_bound INTEGER, upper_bound INTEGER)
+  RETURNS SETOF "Car"
+  LANGUAGE plpgsql
+  AS $$
+  BEGIN
+    RETURN QUERY SELECT * FROM "Car" WHERE "mileage" >= lower_bound AND "mileage" < upper_bound;
+  END;
+  $$;`;
+
+  await db.$executeRaw`CREATE OR REPLACE FUNCTION list_functions_and_procedures()
+  RETURNS TABLE("Schema" text, "Name" text, "ResultDataType" text, "ArgumentDataTypes" text)
+  LANGUAGE plpgsql
+  AS $$
+  BEGIN
+    RETURN QUERY
+    SELECT n.nspname::text as "Schema",
+           p.proname::text as "Name",
+           pg_catalog.pg_get_function_result(p.oid)::text as "ResultDataType",
+           pg_catalog.pg_get_function_arguments(p.oid)::text as "ArgumentDataTypes"
+    FROM pg_catalog.pg_proc p
+    LEFT JOIN pg_catalog.pg_namespace n ON n.oid = p.pronamespace
+    WHERE pg_catalog.pg_function_is_visible(p.oid)
+      AND n.nspname = 'public'
+    ORDER BY 1, 2;
+  END;
+  $$;`;
+}
