@@ -1,4 +1,3 @@
-import { type Car } from "@prisma/client";
 import { db } from "../db";
 import { getUserRole } from "./user";
 
